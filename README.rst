@@ -3,8 +3,8 @@ Kerberos authentication with Twisted's treq
 
 treq-kerberos adds Kerberos (SPNEGO/HTTP Negotiate) authentication for treq.
 
-treq is a requests-like library for making HTTP requests asynchronously
-(non-blocking) using the Twisted framework.
+`treq <https://github.com/twisted/treq>`_ is a requests-like library for
+making HTTP requests asynchronously (non-blocking) using the Twisted framework.
 
 treq-kerberos is inspired by `requests-kerberos
 <https://github.com/requests/requests-kerberos>`_.
