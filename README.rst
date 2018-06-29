@@ -83,6 +83,4 @@ TODO:
 =====
 * Rewrite to use python-gssapi instead of python-kerberos (similar to
   `requests-gssapi <https://github.com/pythongssapi/requests-gssapi>`_).
-* Refactor to support all treq request methods, not just ``get()``
-* Add tests (!)
 * Better API documentation

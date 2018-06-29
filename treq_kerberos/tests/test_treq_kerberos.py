@@ -54,13 +54,43 @@ class TestGet(object):
                             StubTreq(_ReleaseTestResource()))
         monkeypatch.setattr('treq_kerberos.kerberos', FakeKerberos())
 
+    url = 'https://example.com/'
+    auth = TreqKerberosAuth()
+
     @pytest.inlineCallbacks
     def test_get(self):
-        url = 'https://example.com/'
-        auth = TreqKerberosAuth()
-        response = yield treq_kerberos.get(url, auth=auth)
+        response = yield treq_kerberos.get(self.url, auth=self.auth)
+        yield self.assert_response_ok(response)
+
+    @pytest.inlineCallbacks
+    def test_put(self):
+        response = yield treq_kerberos.put(self.url, auth=self.auth)
+        yield self.assert_response_ok(response)
+
+    @pytest.inlineCallbacks
+    def test_patch(self):
+        response = yield treq_kerberos.patch(self.url, auth=self.auth)
+        yield self.assert_response_ok(response)
+
+    @pytest.inlineCallbacks
+    def test_post(self):
+        response = yield treq_kerberos.post(self.url, auth=self.auth)
+        yield self.assert_response_ok(response)
+
+    @pytest.inlineCallbacks
+    def test_head(self):
+        response = yield treq_kerberos.head(self.url, auth=self.auth)
+        assert response.code == 200
+        content = yield response.content()
+        assert content == ''
+
+    @pytest.inlineCallbacks
+    def test_delete(self):
+        response = yield treq_kerberos.delete(self.url, auth=self.auth)
+        yield self.assert_response_ok(response)
+
+    @pytest.inlineCallbacks
+    def assert_response_ok(self, response):
         assert response.code == 200
         content = yield response.content()
         assert content == '<html>success</html>'
-
-    # TODO: test_post, test_put, test_patch

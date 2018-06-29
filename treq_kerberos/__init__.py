@@ -17,27 +17,52 @@ class TreqKerberosAuth(object):
         self.force_preemptive = force_preemptive
 
 
+def get(url, **kwargs):
+    return request('GET', url, **kwargs)
+
+
+def put(url, data=None, **kwargs):
+    return request('PUT', url, data=data, **kwargs)
+
+
+def patch(url, data=None, **kwargs):
+    return request('PATCH', url, data=data, **kwargs)
+
+
+def post(url, data=None, **kwargs):
+    return request('POST', url, data=data, **kwargs)
+
+
+def head(url, **kwargs):
+    return request('HEAD', url, **kwargs)
+
+
+def delete(url, **kwargs):
+    return request('DELETE', url, **kwargs)
+
+
 @defer.inlineCallbacks
-def get(url, headers={}, **kwargs):
+def request(method, url, **kwargs):
     """
     Pass auth=HTTPKerberosAuth() kwarg
-
-    TODO: refactor this into "request()", using different verb wrappers.
     """
     auth = kwargs.get('auth')
+    headers = kwargs.get('headers', {})
     # headers = headers.copy() # ? We do modify the dict in place here...
     if isinstance(auth, TreqKerberosAuth):
         del kwargs['auth']
         if auth.force_preemptive:
             # Save a round-trip and set the Negotiate header on the first req.
             headers['Authorization'] = yield negotiate_header(url)
-    response = yield treq.get(url=url, headers=headers, **kwargs)
+    response = yield treq.request(method=method, url=url, headers=headers,
+                                  **kwargs)
     # Retry if we got a 401 / Negotiate response.
     if response.code == 401 and isinstance(auth, TreqKerberosAuth):
         auth_mechs = response.headers.getRawHeaders('WWW-Authenticate')
         if 'Negotiate' in auth_mechs:
             headers['Authorization'] = yield negotiate_header(url)
-            response = yield treq.get(url=url, headers=headers, **kwargs)
+            response = yield treq.request(method=method, url=url,
+                                          headers=headers, **kwargs)
     defer.returnValue(response)
 
 
