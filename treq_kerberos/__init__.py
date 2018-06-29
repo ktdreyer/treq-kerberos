@@ -31,13 +31,13 @@ def get(url, headers={}, **kwargs):
         if auth.force_preemptive:
             # Save a round-trip and set the Negotiate header on the first req.
             headers['Authorization'] = yield negotiate_header(url)
-    response = yield treq.get(url, headers, **kwargs)
+    response = yield treq.get(url=url, headers=headers, **kwargs)
     # Retry if we got a 401 / Negotiate response.
     if response.code == 401 and isinstance(auth, TreqKerberosAuth):
         auth_mechs = response.headers.getRawHeaders('WWW-Authenticate')
         if 'Negotiate' in auth_mechs:
             headers['Authorization'] = yield negotiate_header(url)
-            response = yield treq.get(url, headers, **kwargs)
+            response = yield treq.get(url=url, headers=headers, **kwargs)
     defer.returnValue(response)
 
 
