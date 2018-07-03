@@ -23,12 +23,12 @@ class _ReleaseTestResource(Resource):
         if auth_header:
             if auth_header == 'Negotiate NEGOTIATEDETAILSHERE':
                 request.setResponseCode(200)
-                return '<html>success</html>'
+                return b'<html>success</html>'
             request.setResponseCode(403)
-            return 'failed SPNEGO auth'
+            return b'failed SPNEGO auth'
         request.setResponseCode(401)
         request.setHeader(b'WWW-Authenticate', b'Negotiate')
-        return 'retry with SPNEGO authentication'
+        return b'retry with SPNEGO authentication'
 
 
 class FakeKerberosContext(object):
@@ -82,7 +82,7 @@ class TestGet(object):
         response = yield treq_kerberos.head(self.url, auth=self.auth)
         assert response.code == 200
         content = yield response.content()
-        assert content == ''
+        assert content == b''
 
     @pytest.inlineCallbacks
     def test_delete(self):
@@ -93,4 +93,4 @@ class TestGet(object):
     def assert_response_ok(self, response):
         assert response.code == 200
         content = yield response.content()
-        assert content == '<html>success</html>'
+        assert content == b'<html>success</html>'
