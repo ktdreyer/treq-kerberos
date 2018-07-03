@@ -130,3 +130,8 @@ TODO:
 =====
 * Rewrite to use python-gssapi instead of python-kerberos (similar to
   `requests-gssapi <https://github.com/pythongssapi/requests-gssapi>`_).
+
+Packages that use this package
+==============================
+
+* `txkoji <https://pypi.org/project/txkoji/>`_
