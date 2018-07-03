@@ -1,6 +1,9 @@
 Kerberos authentication with Twisted's treq
 ===========================================
 
+.. image:: https://travis-ci.org/ktdreyer/treq-kerberos.svg?branch=master
+             :target: https://travis-ci.org/ktdreyer/treq-kerberos
+
 treq-kerberos adds Kerberos (SPNEGO/HTTP Negotiate) authentication for treq.
 
 `treq <https://github.com/twisted/treq>`_ is a requests-like library for
