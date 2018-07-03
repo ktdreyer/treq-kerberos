@@ -11,7 +11,7 @@ from twisted.internet import threads
 # the methods treq provides:
 from treq import *  # NOQA: F401,F403
 
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 class TreqKerberosAuth(object):
