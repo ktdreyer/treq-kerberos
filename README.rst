@@ -48,6 +48,47 @@ GET a URL that requires Kerberos authentication:
 (See the full script at ``examples/get.py``.)
 
 
+Other HTTP methods
+------------------
+
+treq-kerberos implements the same basic API as treq, so you can call the
+methods for each of the HTTP verbs:
+
+.. code-block:: python
+
+    @defer.inlineCallbacks
+    def example():
+        url = 'https://example.com/'
+        auth = TreqKerberosAuth()
+
+        data = {'my': 'parameter'}
+
+        # HTTP GET
+        response = yield treq_kerberos.get(url, auth=auth)
+
+        # HTTP PUT
+        response = yield treq_kerberos.put(url, data=data, auth=auth)
+
+        # HTTP POST
+        response = yield treq_kerberos.post(url, data=data, auth=auth)
+
+        # HTTP PATCH
+        response = yield treq_kerberos.patch(url, data=data, auth=auth)
+
+        # HTTP HEAD (note that content() will always be blank)
+        response = yield treq_kerberos.head(url, auth=auth)
+
+        # HTTP DELETE
+        response = yield treq_kerberos.delete(url, auth=auth)
+
+Alternatively you may also call the general ``request()`` method:
+
+.. code-block:: python
+
+        # HTTP GET
+        response = yield treq_kerberos.request('GET', url, auth=auth)
+
+
 Preemptive authentication
 -------------------------
 
@@ -89,4 +130,3 @@ TODO:
 =====
 * Rewrite to use python-gssapi instead of python-kerberos (similar to
   `requests-gssapi <https://github.com/pythongssapi/requests-gssapi>`_).
-* Better API documentation
