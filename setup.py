@@ -4,6 +4,12 @@ import subprocess
 import sys
 from setuptools.command.test import test as TestCommand
 from setuptools import setup, Command
+try:
+    # Python 2 backwards compat
+    from __builtin__ import raw_input as input
+except ImportError:
+    pass
+
 
 readme = os.path.join(os.path.dirname(__file__), 'README.rst')
 LONG_DESCRIPTION = open(readme).read()
@@ -22,35 +28,36 @@ version = metadata['version']
 class BumpCommand(Command):
     """ Bump the __version__ number and commit all changes. """
 
-    user_options = []
+    user_options = [('version=', 'v', 'version number to use')]
 
     def initialize_options(self):
-        pass
+        new_version = metadata['version'].split('.')
+        new_version[-1] = str(int(new_version[-1]) + 1)  # Bump the final part
+        self.version = ".".join(new_version)
 
     def finalize_options(self):
         pass
 
     def run(self):
-        version = metadata['version'].split('.')
-        version[-1] = str(int(version[-1]) + 1)  # Bump the final part
 
+        print('old version: %s  new version: %s' %
+              (metadata['version'], self.version))
         try:
-            print('old version: %s  new version: %s' %
-                  (metadata['version'], '.'.join(version)))
-            raw_input('Press enter to confirm, or ctrl-c to exit >')
+            input('Press enter to confirm, or ctrl-c to exit >')
         except KeyboardInterrupt:
             raise SystemExit("\nNot proceeding")
 
         old = "__version__ = '%s'" % metadata['version']
-        new = "__version__ = '%s'" % '.'.join(version)
-
+        new = "__version__ = '%s'" % self.version
         module_file = read_module_contents()
         with open('treq_kerberos/__init__.py', 'w') as fileh:
             fileh.write(module_file.replace(old, new))
 
+        old = 'Version:        %s' % metadata['version']
+        new = 'Version:        %s' % self.version
+
         # Commit everything with a standard commit message
-        cmd = ['git', 'commit', '-a', '-m',
-               'version %s' % '.'.join(version)]
+        cmd = ['git', 'commit', '-a', '-m', 'version %s' % self.version]
         print(' '.join(cmd))
         subprocess.check_call(cmd)
 
