@@ -4,6 +4,7 @@ import treq_kerberos
 from treq.testing import StubTreq
 from twisted.web.resource import Resource
 import pytest
+import pytest_twisted
 
 TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
 FIXTURES_DIR = os.path.join(TESTS_DIR, 'fixtures')
@@ -57,39 +58,39 @@ class TestGet(object):
     url = 'https://example.com/'
     auth = TreqKerberosAuth()
 
-    @pytest.inlineCallbacks
+    @pytest_twisted.inlineCallbacks
     def test_get(self):
         response = yield treq_kerberos.get(self.url, auth=self.auth)
         yield self.assert_response_ok(response)
 
-    @pytest.inlineCallbacks
+    @pytest_twisted.inlineCallbacks
     def test_put(self):
         response = yield treq_kerberos.put(self.url, auth=self.auth)
         yield self.assert_response_ok(response)
 
-    @pytest.inlineCallbacks
+    @pytest_twisted.inlineCallbacks
     def test_patch(self):
         response = yield treq_kerberos.patch(self.url, auth=self.auth)
         yield self.assert_response_ok(response)
 
-    @pytest.inlineCallbacks
+    @pytest_twisted.inlineCallbacks
     def test_post(self):
         response = yield treq_kerberos.post(self.url, auth=self.auth)
         yield self.assert_response_ok(response)
 
-    @pytest.inlineCallbacks
+    @pytest_twisted.inlineCallbacks
     def test_head(self):
         response = yield treq_kerberos.head(self.url, auth=self.auth)
         assert response.code == 200
         content = yield response.content()
         assert content == b''
 
-    @pytest.inlineCallbacks
+    @pytest_twisted.inlineCallbacks
     def test_delete(self):
         response = yield treq_kerberos.delete(self.url, auth=self.auth)
         yield self.assert_response_ok(response)
 
-    @pytest.inlineCallbacks
+    @pytest_twisted.inlineCallbacks
     def assert_response_ok(self, response):
         assert response.code == 200
         content = yield response.content()
