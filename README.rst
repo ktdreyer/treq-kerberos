@@ -25,24 +25,21 @@ GET a URL that requires Kerberos authentication:
 
     from treq_kerberos import TreqKerberosAuth
     import treq_kerberos
-    from twisted.internet import defer, reactor
+    from twisted.internet import defer
+    from twisted.internet.task import react
 
 
     @defer.inlineCallbacks
-    def example():
+    def example(reactor):
         url = 'https://errata.devel.redhat.com/'
         auth = TreqKerberosAuth()
-        try:
-            response = yield treq_kerberos.get(url, auth=auth)
-            content = yield response.content()
-            print(content)
-        except Exception as e:
-            print(e)
+        response = yield treq_kerberos.get(url, auth=auth)
+        content = yield response.content()
+        print(content)
 
 
     if __name__ == '__main__':
-        example().addCallback(lambda ign: reactor.stop())
-        reactor.run()
+        react(example)
 
 
 (See the full script at ``examples/get.py``.)
@@ -57,7 +54,7 @@ methods for each of the HTTP verbs:
 .. code-block:: python
 
     @defer.inlineCallbacks
-    def example():
+    def example(reactor):
         url = 'https://example.com/'
         auth = TreqKerberosAuth()
 
@@ -105,7 +102,7 @@ authentication, you can skip the first round-trip by setting the
 .. code-block:: python
 
     @defer.inlineCallbacks
-    def example():
+    def example(reactor):
         url = 'https://errata.devel.redhat.com/'
         auth = TreqKerberosAuth(force_preemptive=True)
         response = yield treq_kerberos.get(url, auth=auth)
