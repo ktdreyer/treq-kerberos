@@ -1,8 +1,8 @@
 Kerberos authentication with Twisted's treq
 ===========================================
 
-.. image:: https://travis-ci.org/ktdreyer/treq-kerberos.svg?branch=master
-             :target: https://travis-ci.org/ktdreyer/treq-kerberos
+.. image:: https://github.com/ktdreyer/treq-kerberos/workflows/tests/badge.svg
+             :target: https://github.com/ktdreyer/treq-kerberos/actions
 
 .. image:: https://badge.fury.io/py/treq-kerberos.svg
              :target: https://badge.fury.io/py/treq-kerberos
