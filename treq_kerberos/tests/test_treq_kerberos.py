@@ -10,7 +10,7 @@ TESTS_DIR = os.path.dirname(os.path.abspath(__file__))
 FIXTURES_DIR = os.path.join(TESTS_DIR, 'fixtures')
 
 
-class _ReleaseTestResource(Resource):
+class FakeTestResource(Resource):
     """
     A twisted.web.resource.Resource that represents a kerberized
     response.
@@ -52,7 +52,7 @@ class TestGet(object):
     @pytest.fixture(autouse=True)
     def patch_deps(self, monkeypatch):
         monkeypatch.setattr('treq_kerberos.treq',
-                            StubTreq(_ReleaseTestResource()))
+                            StubTreq(FakeTestResource()))
         monkeypatch.setattr('treq_kerberos.kerberos', FakeKerberos())
 
     url = 'https://example.com/'
