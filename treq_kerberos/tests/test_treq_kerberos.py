@@ -48,7 +48,7 @@ class FakeKerberos(object):
         return 'NEGOTIATEDETAILSHERE'
 
 
-class TestGet(object):
+class TestRequests(object):
     @pytest.fixture(autouse=True)
     def patch_deps(self, monkeypatch):
         monkeypatch.setattr('treq_kerberos.treq',
